@@ -2,7 +2,7 @@
     <div>
         <form>
             <label for="name">Name</label>
-            <input id="name" type="text" v-model="tankStationName" />
+            <input id="name" type="text" v-model="name" />
 
             <h3>Fuel prices:</h3>
             <label for="euro95">Euro 95</label>
@@ -37,7 +37,7 @@ export default {
     name: 'NewHolidayForm',
     data() {
         return {
-            tankStationName: null,
+            name: null,
             euro95: null,
             diesel: null,
             gas: null,
@@ -49,9 +49,9 @@ export default {
     },
     methods: {
         submitForm() {
-            if (this.tankStationName && this.euro95 && this.diesel && this.gas) {
+            if (this.name && this.euro95 && this.diesel && this.gas) {
                     this.store.create({
-                        name: this.tankStationName,
+                        name: this.name,
                         fuelPrices: {
                             euro95: this.euro95,
                             diesel: this.diesel,
@@ -63,7 +63,7 @@ export default {
                             zipCode: this.zipCode,
                         },
                     })
-                    this.$router.replace({ path: '/' });
+                    this.closeForm();
             } else {
                 window.alert("Fill in all entries");
             }

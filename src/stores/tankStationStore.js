@@ -20,7 +20,6 @@ export const useTankStationStore = defineStore('tankStationStore', {
         name: "Esso",
         fuelPrices: {
           euro95: "2.05",
-          diesel: "1.8",
           gas: "0.75",
         },
         address: {
@@ -33,16 +32,49 @@ export const useTankStationStore = defineStore('tankStationStore', {
         fuelPrices: {
           euro95: "2.05",
           diesel: "1.8",
-          gas: "0.75",
         },
         address: {
-          street: "Koningsplain",
-          unitNumber: "53",
-          zipCode: "1064RL",
+          street: "Koningsplein",
+          unitNumber: "67",
+          zipCode: "1034PL",
+        },
+      }, {
+        name: "Makro",
+        fuelPrices: {
+          diesel: "1.8",
+          gas: "0.78",
+        },
+        address: {
+          street: "Waterlooplein",
+          unitNumber: "26",
+          zipCode: "1077EB",
+        },
+      },
+      {
+        name: "Texaco",
+        fuelPrices: {
+          euro95: "2.05",
+          diesel: "1.8",
+        },
+        address: {
+          street: "Eerstestraat",
+          unitNumber: "123",
+          zipCode: "1032FT",
         },
       },
     ]
   }),
+  getters: {
+    hasEuro95() {
+      return this.tankStations.filter(station => station.fuelPrices.euro95);
+    },
+    hasDiesel() {
+      return this.tankStations.filter(station => station.fuelPrices.diesel);
+    },
+    hasGas() {
+      return this.tankStations.filter(station => station.fuelPrices.gas);
+    },
+  },
   actions: {
     create(tankStation) {
       this.tankStations.push({
