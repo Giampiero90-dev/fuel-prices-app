@@ -3,10 +3,9 @@
     <div>
       <router-link to="/create">+ Add a new tank station</router-link>
       <div>
-        <button @click="filterTankStations('all')">All</button>
-        <button @click="filterTankStations('euro95')">Euro95</button>
-        <button @click="filterTankStations('diesel')">Diesel</button>
-        <button @click="filterTankStations('gas')">Gas</button>
+        <button @click="setFilter('all')">All</button>
+        <button v-for="(fuelType, index) in tankStationStore.fuelTypes" :key="index" 
+          @click="setFilter(fuelType.id)">{{fuelType.name}}</button>
       </div>
       <ul>
         <li v-for="(tankStation, index) in selectedTankStations" :key="index">
@@ -14,9 +13,11 @@
           <div>
             <h3>Fuel Prices:</h3>
             <ul>
-              <li v-if="tankStation.fuelPrices.euro95">Euro95: €{{ tankStation.fuelPrices.euro95 }}</li>
-              <li v-if="tankStation.fuelPrices.diesel">Diesel: €{{ tankStation.fuelPrices.diesel }}</li>
-              <li v-if="tankStation.fuelPrices.gas">Gas: €{{ tankStation.fuelPrices.gas }}</li>
+              <template v-for="(fuelType, index) in tankStationStore.fuelTypes" :key="index">
+                <li v-if="tankStation.fuelPrices[fuelType.id] !== undefined">
+                  {{ fuelType.name }}: € {{ tankStation.fuelPrices[fuelType.id] }}
+                </li>
+              </template>
             </ul>
           </div>
           <div>
@@ -37,20 +38,17 @@ export default {
   data() {
     return {
       tankStationStore: useTankStationStore(),
-      selectedTankStations: useTankStationStore().tankStations,
+      selectedFilter: "all",
     }
   },
   methods: {
-    filterTankStations(fuelType) {
-      if (fuelType === 'euro95') {
-        this.selectedTankStations = this.tankStationStore.hasEuro95;
-      } else if (fuelType === 'diesel') {
-        this.selectedTankStations = this.tankStationStore.hasDiesel;
-      } else if (fuelType === 'gas') {
-        this.selectedTankStations = this.tankStationStore.hasGas;
-      } else {
-        this.selectedTankStations = this.tankStationStore.tankStations;
-      }
+    setFilter(fuelType) {
+      this.selectedFilter = fuelType;
+    },
+  },
+  computed: {
+    selectedTankStations: function () {
+      return this.selectedFilter === "all" ? this.tankStationStore.tankStations : this.tankStationStore.filterByFuelType(this.selectedFilter);
     }
   }
 }

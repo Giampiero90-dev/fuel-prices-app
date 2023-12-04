@@ -53,8 +53,7 @@ export const useTankStationStore = defineStore('tankStationStore', {
       {
         name: "Texaco",
         fuelPrices: {
-          euro95: "2.05",
-          diesel: "1.8",
+          euro98: "2.05",
         },
         address: {
           street: "Eerstestraat",
@@ -62,18 +61,20 @@ export const useTankStationStore = defineStore('tankStationStore', {
           zipCode: "1032FT",
         },
       },
-    ]
+    ],
+    fuelTypes: [
+      {id: "euro95", name: "Euro95"},
+      {id: "euro98", name: "Euro98"},
+      {id: "diesel", name: "Diesel"},
+      {id: "gas", name: "Gas"},
+  ],
   }),
   getters: {
-    hasEuro95() {
-      return this.tankStations.filter(station => station.fuelPrices.euro95);
-    },
-    hasDiesel() {
-      return this.tankStations.filter(station => station.fuelPrices.diesel);
-    },
-    hasGas() {
-      return this.tankStations.filter(station => station.fuelPrices.gas);
-    },
+    filterByFuelType: (state) => {
+      return (fuelType) => state.tankStations.filter(station => {
+        return station.fuelPrices[fuelType] !== undefined;
+      });
+    }
   },
   actions: {
     create(tankStation) {
