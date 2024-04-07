@@ -29,13 +29,18 @@
 				</li>
 			</ul>
 		</div>
+		<LeafLetMap />
 	</main>
 </template>
 
 <script>
 import { useTankStationStore } from '../stores/tankStationStore';
+import LeafLetMap from '../components/Map.vue'
 
 export default {
+	components: {
+		LeafLetMap,
+	},
 	data() {
 		return {
 			tankStationStore: useTankStationStore(),
